@@ -1,5 +1,5 @@
 # #################################################################################################################################
-# NAME : Common
+# NAME : TM1ps Module Common
 #
 # DESCRIPTION : This module contains common functions
 #
