@@ -4,9 +4,6 @@
 # DESCRIPTION : This module contains functions that wrapp TM1 Rest API
 #
 # LAST UPDATE : 2019/10/31
-#
-# DEPENDENCIES : 
-#   TM1ps_Common.psm1
 # #################################################################################################################################
 
 add-type @"
