@@ -1,4 +1,6 @@
-<img src="https://github.com/ichermak/TM1ps/blob/master/Images/TM1ps.png" align="middle"/>
+<p align="center">
+  <src="https://github.com/ichermak/TM1ps/blob/master/Images/TM1ps.png" />
+</p>
 
 # TM1ps
 
