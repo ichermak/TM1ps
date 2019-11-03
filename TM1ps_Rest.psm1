@@ -1,17 +1,12 @@
 # #################################################################################################################################
-# NAME : TM1ps Module Rest
+# NAME : Rest
 #
 # DESCRIPTION : This module contains functions that wrapp TM1 Rest API
 #
-# AUTOR : Ifthen CHERMAK
-#
 # LAST UPDATE : 2019/10/31
 #
-# VERSION : V 0.1.1
-#
 # DEPENDENCIES : 
-#   TM1ps_Common.psm1 (V 0.1.1)
-#
+#   TM1ps_Common.psm1
 # #################################################################################################################################
 
 add-type @"
