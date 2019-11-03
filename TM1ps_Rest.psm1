@@ -22,10 +22,10 @@ function Invoke-Tm1RestRequest
 { 
     <#
         .SYNOPSIS
-        Permet de lancer une requete Rest pour TM1.
+        Allows to launch Tm1 Rest request.
 
         .DESCRIPTION
-        Ce module a pour but de simplifier l'utilisation l'Api Rest de TM1 en powershell.
+        Allows to launch Tm1 Rest request using the informations stored in the config.ini.
 
         .PARAMETER configFilePath
         Parameter 1
@@ -47,16 +47,7 @@ function Invoke-Tm1RestRequest
         None.
 
         .EXAMPLE
-        PS> extension -name "File"
-        File.txt
-
-        .EXAMPLE
-        PS> extension -name "File" -extension "doc"
-        File.doc
-
-        .EXAMPLE
-        PS> extension "File" "doc"
-        File.doc
+        None.
 
         .LINK
         https://github.com/ichermak/TM1ps
@@ -84,11 +75,19 @@ function Invoke-Tm1RestRequest
         $tm1HttpPort = (Get-IniContent -filePath $configFilePath).$tm1ServerName.port
         $tm1User = (Get-IniContent -filePath $configFilePath).$tm1ServerName.user
         $tm1UserPassword = (Get-IniContent -filePath $configFilePath).$tm1ServerName.password
+        $tm1UserSsl = (Get-IniContent -filePath $configFilePath).$tm1ServerName.ssl.ToLower()
 
         # Build the rest request
         $headers = @{"Authorization" = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($tm1User):$($tm1UserPassword)")); }
-        $tm1RestApiUrl = "https://" + $tm1AdminHost + ":" + $tm1HttpPort + "/api/v1/"
-        
+        if($tm1UserSsl.ToLower() = 'true')
+        {
+            $tm1Protocol = "https"
+        }
+        else 
+        {
+            $tm1Protocol = "http"
+        }
+        $tm1RestApiUrl = $tm1Protocol + "://" + $tm1AdminHost + ":" + $tm1HttpPort + "/api/v1/"
         $tm1RestFullUrl = $tm1RestApiUrl + $tm1RestRequest
 
         # Execute the rest request
