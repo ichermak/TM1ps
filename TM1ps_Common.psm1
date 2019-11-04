@@ -15,7 +15,7 @@ function Get-IniContent
         .DESCRIPTION
         Retrieve the content of an ini file.
 
-        .PARAMETER FilePath
+        .PARAMETER filePath
         The ini file path.
 
         .INPUTS
