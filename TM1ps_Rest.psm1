@@ -25,21 +25,21 @@ function Invoke-Tm1RestRequest
         Allows to launch Tm1 Rest request.
 
         .DESCRIPTION
-        Allows to launch Tm1 Rest request using the informations stored in the config.ini.
+        Allows to launch Tm1 Rest request using the informations stored in a configuration file.
 
-        .PARAMETER restMethod
+        .PARAMETER RestMethod
         Parameter 1
 
-        .PARAMETER configFilePath
+        .PARAMETER ConfigFilePath
         Parameter 2
 
-        .PARAMETER tm1ServerName
+        .PARAMETER Tm1ServerName
         Parameter 3
 
-        .PARAMETER tm1RestRequest
+        .PARAMETER Tm1RestRequest
         Parameter 4
 
-        .PARAMETER tm1RestBody
+        .PARAMETER Tm1RestBody
         Parameter 5
 
         .INPUTS
@@ -61,36 +61,33 @@ function Invoke-Tm1RestRequest
     
     PARAM 
     (
-        [Parameter(Mandatory = $true)][STRING]$restMethod,
-        [Parameter(Mandatory = $true)][STRING]$configFilePath,
-        [Parameter(Mandatory = $true)][STRING]$tm1ServerName,
-        [Parameter(Mandatory = $true)][STRING]$tm1RestRequest,
-        [Parameter(Mandatory = $false)][STRING]$tm1RestBody
+        [Parameter(Mandatory = $true)][STRING]$RestMethod,
+        [Parameter(Mandatory = $true)][STRING]$ConfigFilePath,
+        [Parameter(Mandatory = $true)][STRING]$Tm1ServerName,
+        [Parameter(Mandatory = $true)][STRING]$Tm1RestRequest,
+        [Parameter(Mandatory = $false)][STRING]$Tm1RestBody
     )
 
     TRY 
     {
-        # Modules importation
-        Import-Module ".\TM1ps_Common.psm1"
-
         # To disregard the certificate        
         $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
         [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
         [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 
-        # Get informations from the config.ini file
-        $tm1AdminHost = (Get-IniContent -filePath $configFilePath).$tm1ServerName.address
-        $tm1HttpPort = (Get-IniContent -filePath $configFilePath).$tm1ServerName.port
-        $tm1User = (Get-IniContent -filePath $configFilePath).$tm1ServerName.user
-        $tm1UserPassword = (Get-IniContent -filePath $configFilePath).$tm1ServerName.password
-        $tm1UserSsl = (Get-IniContent -filePath $configFilePath).$tm1ServerName.ssl.ToLower()
+        # Get informations from the config file
+        $Tm1AdminHost = (Get-Content $ConfigFilePath | ConvertFrom-Json).$Tm1ServerName.address
+        $Tm1HttpPort = (Get-Content $ConfigFilePath | ConvertFrom-Json).$Tm1ServerName.port
+        $Tm1User = (Get-Content $ConfigFilePath | ConvertFrom-Json).$Tm1ServerName.user
+        $Tm1UserPassword = (Get-Content $ConfigFilePath | ConvertFrom-Json).$Tm1ServerName.password
+        $Tm1UseSsl = (Get-Content $ConfigFilePath | ConvertFrom-Json).$Tm1ServerName.ssl.ToLower()
 
         # Build the rest request
-        $headers = @{
-                        "Authorization" = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($tm1User):$($tm1UserPassword)")); 
+        $Headers = @{
+                        "Authorization" = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($Tm1User):$($Tm1UserPassword)")); 
                         "Content-Type" = "application/json"
                     }
-        if ($tm1UserSsl.ToLower() = 'true')
+        if ($Tm1UseSsl.ToLower() = 'true')
         {
             $tm1Protocol = "https"
         }
@@ -98,31 +95,32 @@ function Invoke-Tm1RestRequest
         {
             $tm1Protocol = "http"
         }
-        $tm1RestApiUrl = $tm1Protocol + "://" + $tm1AdminHost + ":" + $tm1HttpPort + "/api/v1/"
-        $tm1RestFullUrl = $tm1RestApiUrl + $tm1RestRequest
+        $tm1RestApiUrl = $tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPort + "/api/v1/"
+        $tm1RestFullUrl = $tm1RestApiUrl + $Tm1RestRequest
 
         # Execute the rest request
         $webSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-        if ($tm1RestBody)
+        if ($Tm1RestBody)
         {
-            $tm1RestRequestResult = Invoke-RestMethod -WebSession $webSession -Method $restMethod -Headers $headers -uri $tm1RestFullUrl -Body $tm1RestBody
+            $Tm1RestRequestResult = Invoke-RestMethod -WebSession $webSession -Method $RestMethod -Headers $Headers -uri $tm1RestFullUrl -Body $Tm1RestBody
         }
         else 
         {
-            $tm1RestRequestResult = Invoke-RestMethod -WebSession $webSession -Method $restMethod -Headers $headers -uri $tm1RestFullUrl
+            $Tm1RestRequestResult = Invoke-RestMethod -WebSession $webSession -Method $RestMethod -Headers $Headers -uri $tm1RestFullUrl
         }
     }
 
     CATCH 
     {
-        # Do somthing
+        Write-Error "$($_.Exception.Message)"
+        Break
     }
 
     FINALLY 
     {
-        # Do somthing
+        # Do something
     }
     
-    return $tm1RestRequestResult
+    return $Tm1RestRequestResult
 }
 Export-ModuleMember -Function Invoke-Tm1RestRequest

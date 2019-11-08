@@ -1,0 +1,19 @@
+{
+    "tm1srv01": {
+        "name": "Cubewise - Hr (Sample)",
+        "address": "localhost",
+        "port": "5019",
+        "user": "Admin",
+        "password": "Apple",
+        "ssl": "True"
+    },
+
+    "tm1srv02": {
+        "name": "Cubewise - Migration",
+        "address": "localhost",
+        "port": "5019",
+        "user": "Admin",
+        "password": "Apple",
+        "ssl": "True"
+    }
+}
