@@ -1,11 +1,3 @@
-# #################################################################################################################################
-# NAME : Rest
-#
-# DESCRIPTION : This module contains functions that wrapp TM1 Rest API
-#
-# LAST UPDATE : 2019/11/04
-# #################################################################################################################################
-
 add-type @"
     using System.Net;
     using System.Security.Cryptography.X509Certificates;
