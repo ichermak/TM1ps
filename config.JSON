@@ -1,6 +1,6 @@
 {
     "tm1srv01": {
-        "name": "Cubewise - Hr (Sample)",
+        "name": "Server Name 1",
         "address": "localhost",
         "port": "5019",
         "user": "Admin",
@@ -9,7 +9,7 @@
     },
 
     "tm1srv02": {
-        "name": "Cubewise - Migration",
+        "name": "Server Name 2",
         "address": "localhost",
         "port": "5019",
         "user": "Admin",
