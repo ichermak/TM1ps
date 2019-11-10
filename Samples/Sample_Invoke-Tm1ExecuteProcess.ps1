@@ -1,3 +1,16 @@
 Clear-Host
+
+# Import TM1ps module
 Import-Module -Name "C:\Applications\Powershell\TM1ps"
-Invoke-Tm1ExecuteProcess -ConfigFilePath 'C:\Applications\Powershell\TM1ps\config.JSON' -Tm1ServerName 'tm1srv01' -Tm1ProcessName '}bedrock.server.wait' -Tm1ProcessParameters @{pLogOutput = 0;pWaitSec=8}
+
+# Login
+$Tm1Login = Invoke-Tm1Login -Tm1ConnectionName 'connection01'
+Write-Host $Tm1Login   
+
+# Do something
+$Tm1ExecuteProcess = Invoke-Tm1ExecuteProcess -Tm1ConnectionName 'connection01' -Tm1ProcessName '}bedrock.server.wait' -Tm1ProcessParameters @{pLogOutput = 0; pWaitSec = 8 }
+Write-Host $Tm1ExecuteProcess
+
+# Logout
+$Tm1Logout = Invoke-Tm1Logout -Tm1ConnectionName 'connection01'
+Write-Host $Tm1Logout
