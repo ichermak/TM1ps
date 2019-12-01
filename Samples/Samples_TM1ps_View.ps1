@@ -12,6 +12,9 @@ TRY {
   $Tm1ViewsGet = Invoke-Tm1ViewsGet -Tm1ConnectionName 'connection01' -Tm1CubeName 'COSTALLOC_REST_Cost_Allocation'
   Write-Host $Tm1ViewsGet
 
+  $Tm1ViewExists = Invoke-Tm1ViewExists -Tm1ConnectionName 'connection01' -Tm1ViewName 'TM1ps_test' -Tm1CubeName 'COSTALLOC_REST_Cost_Allocation'
+  Write-Host $Tm1ViewExists
+
   $Mdx = @"
             SELECT 
               NON EMPTY 
