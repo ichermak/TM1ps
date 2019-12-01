@@ -1,8 +1,15 @@
 # ======================================================================================================
-# Functions to handel processes
+# _____  _      _   ___   __ 
+#  | |  | |\/| / | | |_) ( (`
+#  |_|  |_|  | |_| |_|   _)_)
+# 
+# Functions to handel processes:
+#   * Invoke-Tm1ProcessesGet
+#   * Invoke-Tm1ProcessExists
+#   * Invoke-Tm1ProcessExecute
 # ======================================================================================================
 
-function Invoke-Tm1ExecuteProcess { 
+function Invoke-Tm1ProcessExecute { 
     <#
         .SYNOPSIS
         ...
@@ -25,20 +32,19 @@ function Invoke-Tm1ExecuteProcess {
         .OUTPUTS
         ...
 
-        .NOTES
-        None.
-
         .EXAMPLE
-        None.
+        Invoke-Tm1ProcessExecute -Tm1ConnectionName 'connection01' -Tm1ProcessName '}bedrock.server.wait' -Tm1ProcessParameters @{pLogOutput = 0; pWaitSec = 8 }
 
         .LINK
         https://github.com/ichermak/TM1ps
     #>
+
+    [CmdletBinding()]
     
     PARAM (
-        [Parameter(Mandatory = $true)][string]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true)][string]$Tm1ProcessName,
-        [Parameter(Mandatory = $false)][hashtable]$Tm1ProcessParameters
+        [Parameter(Mandatory = $true, Position = 1)][string]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)][string]$Tm1ProcessName,
+        [Parameter(Mandatory = $false, Position = 3)][hashtable]$Tm1ProcessParameters
     )
 
     TRY {
@@ -57,7 +63,7 @@ function Invoke-Tm1ExecuteProcess {
         
         # Execute the rest request
         $Tm1RestMethod = 'POST'   
-        $Tm1ExecuteProcessResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
+        $Tm1ProcessExecuteResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
     }
 
     CATCH {
@@ -69,6 +75,6 @@ function Invoke-Tm1ExecuteProcess {
         
     }
     
-    return $Tm1ExecuteProcessResult
+    return $Tm1ProcessExecuteResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ExecuteProcess
+# Export-ModuleMember -Function Invoke-Tm1ProcessExecute

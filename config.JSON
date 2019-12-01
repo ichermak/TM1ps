@@ -3,10 +3,10 @@
         "connection01": {
             "servername": "Server Name 01",
             "adminhost": "localhost",
-            "httpportnumber": "5019",
+            "httpportnumber": "5006",
             "user": "Admin",
             "password": "Apple",
-            "usessl": "True",
+            "usessl": "False",
             "camnamespace": ""
         },
         "connection02": {

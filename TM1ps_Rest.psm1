@@ -1,5 +1,12 @@
 # ======================================================================================================
-# Functions that provide easy use of the TM1 Rest API
+# _____  _      _   ___   __ 
+#  | |  | |\/| / | | |_) ( (`
+#  |_|  |_|  | |_| |_|   _)_)
+# 
+# Functions that provide easy use of the TM1 Rest API:
+#   * Invoke-Tm1Login
+#   * Invoke-Tm1Logout
+#   * Invoke-Tm1RestRequest
 # ======================================================================================================
 
 # Module variables
@@ -42,15 +49,14 @@ function Invoke-Tm1Login {
         .OUTPUTS
         ...
 
-        .NOTES
-        None.
-
         .EXAMPLE
-        None.
+        $Tm1Login = Invoke-Tm1Login -Tm1ConnectionName 'connection01'
 
         .LINK
         https://github.com/ichermak/TM1ps
     #>
+
+    [CmdletBinding()]
     
     PARAM (
         [Parameter(Mandatory = $true)][STRING]$Tm1ConnectionName
@@ -80,7 +86,7 @@ function Invoke-Tm1Login {
         }
         
         # Set Protocol
-        if ($Tm1UseSsl.ToLower() = 'true') {
+        if ($Tm1UseSsl.ToLower() -eq 'true') {
             $Tm1Protocol = "https"
         }
         else {
@@ -90,7 +96,12 @@ function Invoke-Tm1Login {
         # Establish the connection
         $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
         $Tm1RestRequestUrl = $tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + 'ActiveSession'
-        $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -Headers $Headers -uri $Tm1RestRequestUrl
+        if ($PSEdition -ne 'Core') {
+            $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -Headers $Headers -uri $Tm1RestRequestUrl
+        } 
+        else {
+            $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -Headers $Headers -uri $Tm1RestRequestUrl
+        }
     } 
 
     CATCH {
@@ -123,15 +134,14 @@ function Invoke-Tm1Logout {
         .OUTPUTS
         ...
 
-        .NOTES
-        None.
-
         .EXAMPLE
-        None.
+        $Tm1Logout = Invoke-Tm1Logout -Tm1ConnectionName 'connection01'
 
         .LINK
         https://github.com/ichermak/TM1ps
     #>
+
+    [CmdletBinding()]
     
     PARAM (
         [Parameter(Mandatory = $true)][STRING]$Tm1ConnectionName
@@ -144,7 +154,7 @@ function Invoke-Tm1Logout {
         $Tm1UseSsl = $Tm1Connections.$Tm1ConnectionName.usessl
  
         # Set Protocol
-        if ($Tm1UseSsl.ToLower() = 'true') {
+        if ($Tm1UseSsl.ToLower() -eq 'true') {
             $Tm1Protocol = "https"
         }
         else {
@@ -154,7 +164,12 @@ function Invoke-Tm1Logout {
         # Logout        
         $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
         $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + 'logout'
-        $Tm1LogoutResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -uri $Tm1RestRequestUrl
+        if ($PSEdition -ne 'Core') {
+            $Tm1LogoutResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -uri $Tm1RestRequestUrl
+        }
+        else {
+            $Tm1LogoutResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -uri $Tm1RestRequestUrl
+        }
     } 
 
     CATCH {
@@ -196,32 +211,30 @@ function Invoke-Tm1RestRequest {
         .OUTPUTS
         ...
 
-        .NOTES
-        None.
-
         .EXAMPLE
-        None.
+        Invoke-Tm1RestRequest -Tm1ConnectionName 'connection01' -Tm1RestMethod 'GET' -Tm1RestRequest 'Cubes?$select=Name&$expand=Dimensions($select=Name)'
 
         .LINK
         https://github.com/ichermak/TM1ps
     #>
-    
+
+    [CmdletBinding()]
+
     PARAM (
-        [Parameter(Mandatory = $true)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true)][STRING]$Tm1RestMethod,
-        [Parameter(Mandatory = $true)][STRING]$Tm1RestRequest,
-        [Parameter(Mandatory = $false)][STRING]$Tm1RestBody
+        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1RestMethod,
+        [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1RestRequest,
+        [Parameter(Mandatory = $false, Position = 4)][STRING]$Tm1RestBody
     )
 
     TRY {
-
         # Get informations from the config file
         $Tm1AdminHost = $Tm1Connections.$Tm1ConnectionName.adminhost
         $Tm1HttpPortNumber = $Tm1Connections.$Tm1ConnectionName.httpportnumber
         $Tm1UseSsl = $Tm1Connections.$Tm1ConnectionName.usessl
 
         # Set Protocol
-        if ($Tm1UseSsl.ToLower() = 'true') {
+        if ($Tm1UseSsl.ToLower() -eq 'true') {
             $Tm1Protocol = "https"
         }
         else {
@@ -234,10 +247,20 @@ function Invoke-Tm1RestRequest {
         
         # Execute the rest request
         if ($Tm1RestBody) {
-            $Tm1RestRequestResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method $Tm1RestMethod -uri $Tm1RestRequestUrl -Body $Tm1RestBody
+            if ($PSEdition -ne 'Core') {
+                $Tm1RestRequestResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method $Tm1RestMethod -uri $Tm1RestRequestUrl -Body $Tm1RestBody
+            }
+            else {
+                $Tm1RestRequestResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method $Tm1RestMethod -uri $Tm1RestRequestUrl -Body $Tm1RestBody
+            }
         }
         else {
-            $Tm1RestRequestResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method $Tm1RestMethod -uri $Tm1RestRequestUrl
+            if ($PSEdition -ne 'Core') {
+                $Tm1RestRequestResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method $Tm1RestMethod -uri $Tm1RestRequestUrl
+            }
+            else {
+                $Tm1RestRequestResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method $Tm1RestMethod -uri $Tm1RestRequestUrl
+            }
         }
     }
 
