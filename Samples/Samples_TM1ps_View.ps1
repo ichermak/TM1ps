@@ -34,7 +34,7 @@ TRY {
               )
 "@
 
-  $Tm1ViewCreateByMdx = Invoke-Tm1ViewCreateByMdx -Tm1ConnectionName 'connection01' -Tm1ViewName 'TM1ps_test' -Tm1CubeName 'COSTALLOC_REST_Cost_Allocation' -Tm1Mdx $Mdx
+  $Tm1ViewCreateByMdx = Invoke-Tm1ViewCreateByMdx -Tm1ConnectionName 'connection01' -Tm1ViewName 'TM1ps_test' -Tm1CubeName 'COSTALLOC_REST_Cost_Allocation' -Tm1Mdx $Mdx -Tm1Overwrite $Tm1ViewExists
   Write-Host $Tm1ViewCreateByMdx
 
 }

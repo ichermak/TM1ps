@@ -144,6 +144,9 @@ function Invoke-Tm1ViewCreateByMdx {
         .PARAMETER Tm1Mdx
         Parameter 4
 
+        .PARAMETER Tm1Overwrite
+        Parameter 5
+
         .INPUTS
         None. You cannot pipe objects to this function.
 
@@ -163,7 +166,8 @@ function Invoke-Tm1ViewCreateByMdx {
         [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
         [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1ViewName,
         [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1CubeName,
-        [Parameter(Mandatory = $true, Position = 4)][STRING]$Tm1Mdx
+        [Parameter(Mandatory = $true, Position = 4)][STRING]$Tm1Mdx,
+        [Parameter(Mandatory = $false, Position = 5)][BOOLEAN]$Tm1Overwrite = $false
     )
 
     TRY {
@@ -173,8 +177,16 @@ function Invoke-Tm1ViewCreateByMdx {
         # Build the body
         $Tm1RestBody = '{"@odata.type": "ibm.tm1.api.v1.MDXView", "Name": "' + $Tm1ViewName + '", "MDX" : "' + $Tm1Mdx + '"}'
 
+        # Test if view exists 
+        $Tm1ViewExists = Invoke-Tm1ViewExists -Tm1ConnectionName $Tm1ConnectionName -Tm1ViewName $Tm1ViewName -Tm1CubeName $Tm1CubeName
+
         # Execute the rest request
-        $Tm1RestMethod = 'POST'   
+        if ($Tm1ViewExists -And $Tm1Overwrite) {
+            $Tm1RestMethod = 'PATCH'
+        }
+        else {
+            $Tm1RestMethod = 'POST'   
+        }
         $Tm1ViewCreateByMdxResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
     }
 

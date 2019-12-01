@@ -160,6 +160,9 @@ function Invoke-Tm1SubsetCreatebyMDX {
         .PARAMETER Tm1Mdx
         Parameter 5
 
+        .PARAMETER Tm1Overwrite
+        Parameter 6
+
         .INPUTS
         None. You cannot pipe objects to this function.
 
@@ -180,7 +183,8 @@ function Invoke-Tm1SubsetCreatebyMDX {
         [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1SubsetName,
         [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1DimensionName,
         [Parameter(Mandatory = $false, Position = 4)][STRING]$Tm1HierarchyName,
-        [Parameter(Mandatory = $true, Position = 5)][STRING]$Tm1Mdx
+        [Parameter(Mandatory = $true, Position = 5)][STRING]$Tm1Mdx,
+        [Parameter(Mandatory = $false, Position = 5)][BOOLEAN]$Tm1Overwrite = $false
     )
 
     TRY {
@@ -194,9 +198,17 @@ function Invoke-Tm1SubsetCreatebyMDX {
         
         # Build the body
         $Tm1RestBody = '{"Name": "' + $Tm1SubsetName + '", "Expression": "' + $Tm1Mdx + '"}'
+        
+        # Test if view exists
+        $Tm1SubsetExists = Invoke-Tm1SubsetExists -Tm1ConnectionName $Tm1ConnectionName -Tm1SubsetName $Tm1SubsetName -Tm1DimensionName $Tm1DimensionName -Tm1HierarchyName $Tm1HierarchyName
 
         # Execute the rest request
-        $Tm1RestMethod = 'POST'   
+        if ($Tm1SubsetExists -And $Tm1Overwrite) {
+            $Tm1RestMethod = 'PATCH'
+        }
+        else {
+            $Tm1RestMethod = 'POST'   
+        } 
         $Tm1SubsetCreatebyMDXResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
     }
 
