@@ -49,7 +49,7 @@ function Invoke-Tm1ViewsGet {
         
         # Execute the rest request
         $Tm1RestMethod = 'GET'
-        $Tm1ViewsGetResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest
+        $Tm1ViewsGetResult = (Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest).value
     }
 
     CATCH {

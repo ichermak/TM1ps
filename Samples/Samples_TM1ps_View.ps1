@@ -9,6 +9,9 @@ Write-Host $Tm1Login
 
 TRY {
   # Do something
+  $Tm1ViewsGet = Invoke-Tm1ViewsGet -Tm1ConnectionName 'connection01' -Tm1CubeName 'COSTALLOC_REST_Cost_Allocation'
+  Write-Host $Tm1ViewsGet
+
   $Mdx = @"
             SELECT 
               NON EMPTY 
