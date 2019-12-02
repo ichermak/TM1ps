@@ -59,7 +59,7 @@ function Invoke-Tm1Login {
     [CmdletBinding()]
     
     PARAM (
-        [Parameter(Mandatory = $true)][STRING]$Tm1ConnectionName
+        [Parameter(Mandatory = $true)] [STRING]$Tm1ConnectionName
     )
     
     TRY {    
@@ -144,7 +144,7 @@ function Invoke-Tm1Logout {
     [CmdletBinding()]
     
     PARAM (
-        [Parameter(Mandatory = $true)][STRING]$Tm1ConnectionName
+        [Parameter(Mandatory = $true)] [STRING]$Tm1ConnectionName
     )
     
     TRY {    
@@ -221,10 +221,10 @@ function Invoke-Tm1RestRequest {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1RestMethod,
-        [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1RestRequest,
-        [Parameter(Mandatory = $false, Position = 4)][STRING]$Tm1RestBody
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1RestMethod,
+        [Parameter(Mandatory = $true, Position = 3)] [STRING]$Tm1RestRequest,
+        [Parameter(Mandatory = $false, Position = 4)] [STRING]$Tm1RestBody
     )
 
     TRY {

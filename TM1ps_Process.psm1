@@ -42,9 +42,9 @@ function Invoke-Tm1ProcessExecute {
     [CmdletBinding()]
     
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][string]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][string]$Tm1ProcessName,
-        [Parameter(Mandatory = $false, Position = 3)][hashtable]$Tm1ProcessParameters
+        [Parameter(Mandatory = $true, Position = 1)] [string]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [string]$Tm1ProcessName,
+        [Parameter(Mandatory = $false, Position = 3)] [hashtable]$Tm1ProcessParameters
     )
 
     TRY {

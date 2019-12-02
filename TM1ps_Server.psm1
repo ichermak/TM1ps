@@ -34,7 +34,7 @@ function Invoke-Tm1ServerConfigurationGet {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName
     )
 
     TRY {

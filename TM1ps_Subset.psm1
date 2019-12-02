@@ -42,9 +42,9 @@ function Invoke-Tm1SubsetsGet {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1DimensionName,
-        [Parameter(Mandatory = $false, Position = 3)][STRING]$Tm1HierarchyName
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1DimensionName,
+        [Parameter(Mandatory = $false, Position = 3)] [STRING]$Tm1HierarchyName
     )
 
     TRY {
@@ -110,10 +110,10 @@ function Invoke-Tm1SubsetExists {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1SubsetName,
-        [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1DimensionName,
-        [Parameter(Mandatory = $false, Position = 4)][STRING]$Tm1HierarchyName
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1SubsetName,
+        [Parameter(Mandatory = $true, Position = 3)] [STRING]$Tm1DimensionName,
+        [Parameter(Mandatory = $false, Position = 4)] [STRING]$Tm1HierarchyName
     )
 
     TRY {
@@ -179,12 +179,12 @@ function Invoke-Tm1SubsetCreatebyMDX {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1SubsetName,
-        [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1DimensionName,
-        [Parameter(Mandatory = $false, Position = 4)][STRING]$Tm1HierarchyName,
-        [Parameter(Mandatory = $true, Position = 5)][STRING]$Tm1Mdx,
-        [Parameter(Mandatory = $false, Position = 5)][BOOLEAN]$Tm1Overwrite = $false
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1SubsetName,
+        [Parameter(Mandatory = $true, Position = 3)] [STRING]$Tm1DimensionName,
+        [Parameter(Mandatory = $false, Position = 4)] [STRING]$Tm1HierarchyName,
+        [Parameter(Mandatory = $true, Position = 5)] [STRING]$Tm1Mdx,
+        [Parameter(Mandatory = $false, Position = 5)] [BOOLEAN]$Tm1Overwrite = $false
     )
 
     TRY {

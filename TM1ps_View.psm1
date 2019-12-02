@@ -39,8 +39,8 @@ function Invoke-Tm1ViewsGet {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1CubeName
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1CubeName
     )
 
     TRY {
@@ -98,9 +98,9 @@ function Invoke-Tm1ViewExists {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1ViewName,
-        [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1CubeName
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1ViewName,
+        [Parameter(Mandatory = $true, Position = 3)] [STRING]$Tm1CubeName
     )
 
     TRY {
@@ -163,11 +163,11 @@ function Invoke-Tm1ViewCreateByMdx {
     [CmdletBinding()]
 
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][STRING]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][STRING]$Tm1ViewName,
-        [Parameter(Mandatory = $true, Position = 3)][STRING]$Tm1CubeName,
-        [Parameter(Mandatory = $true, Position = 4)][STRING]$Tm1Mdx,
-        [Parameter(Mandatory = $false, Position = 5)][BOOLEAN]$Tm1Overwrite = $false
+        [Parameter(Mandatory = $true, Position = 1)] [STRING]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [STRING]$Tm1ViewName,
+        [Parameter(Mandatory = $true, Position = 3)] [STRING]$Tm1CubeName,
+        [Parameter(Mandatory = $true, Position = 4)] [STRING]$Tm1Mdx,
+        [Parameter(Mandatory = $false, Position = 5)] [BOOLEAN]$Tm1Overwrite = $false
     )
 
     TRY {

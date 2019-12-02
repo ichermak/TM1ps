@@ -39,8 +39,8 @@ function Invoke-Tm1ChoreExecute {
     [CmdletBinding()]
     
     PARAM (
-        [Parameter(Mandatory = $true, Position = 1)][string]$Tm1ConnectionName,
-        [Parameter(Mandatory = $true, Position = 2)][string]$Tm1ChoreName
+        [Parameter(Mandatory = $true, Position = 1)] [string]$Tm1ConnectionName,
+        [Parameter(Mandatory = $true, Position = 2)] [string]$Tm1ChoreName
     )
 
     TRY {
