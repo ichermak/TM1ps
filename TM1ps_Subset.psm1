@@ -193,23 +193,31 @@ function Invoke-Tm1SubsetCreatebyMDX {
             $Tm1HierarchyName = $Tm1DimensionName
         }
 
-        # Build the rest request url
-        $Tm1RestRequest = "Dimensions('$Tm1DimensionName')/Hierarchies('$Tm1HierarchyName')/Subsets"
-        
-        # Build the body
-        $Tm1RestBody = '{"Name": "' + $Tm1SubsetName + '", "Expression": "' + $Tm1Mdx + '"}'
-        
-        # Test if view exists
+        # Test if subset exists
         $Tm1SubsetExists = Invoke-Tm1SubsetExists -Tm1ConnectionName $Tm1ConnectionName -Tm1SubsetName $Tm1SubsetName -Tm1DimensionName $Tm1DimensionName -Tm1HierarchyName $Tm1HierarchyName
 
-        # Execute the rest request
         if ($Tm1SubsetExists -And $Tm1Overwrite) {
+            # Build the rest request url
+            $Tm1RestRequest = "Dimensions('$Tm1DimensionName')/Hierarchies('$Tm1HierarchyName')/Subsets('$Tm1SubsetName')"
+            
+            # Build the body
+            $Tm1RestBody = '{"Expression": "' + $Tm1Mdx + '"}'
+
+            # Execute the rest request
             $Tm1RestMethod = 'PATCH'
+            $Tm1SubsetCreatebyMDXResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
         }
         else {
-            $Tm1RestMethod = 'POST'   
+            # Build the rest request url
+            $Tm1RestRequest = "Dimensions('$Tm1DimensionName')/Hierarchies('$Tm1HierarchyName')/Subsets"
+            
+            # Build the body
+            $Tm1RestBody = '{"Name": "' + $Tm1SubsetName + '", "Expression": "' + $Tm1Mdx + '"}'
+
+            # Execute the rest request
+            $Tm1RestMethod = 'POST'
+            $Tm1SubsetCreatebyMDXResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
         } 
-        $Tm1SubsetCreatebyMDXResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
     }
 
     CATCH {

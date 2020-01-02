@@ -171,23 +171,32 @@ function Invoke-Tm1ViewCreateByMdx {
     )
 
     TRY {
-        # Build the rest request url
-        $Tm1RestRequest = "Cubes('$Tm1CubeName')/Views"
         
-        # Build the body
-        $Tm1RestBody = '{"@odata.type": "ibm.tm1.api.v1.MDXView", "Name": "' + $Tm1ViewName + '", "MDX" : "' + $Tm1Mdx + '"}'
-
         # Test if view exists 
         $Tm1ViewExists = Invoke-Tm1ViewExists -Tm1ConnectionName $Tm1ConnectionName -Tm1ViewName $Tm1ViewName -Tm1CubeName $Tm1CubeName
-
-        # Execute the rest request
+        
         if ($Tm1ViewExists -And $Tm1Overwrite) {
+            # Build the rest request url
+            $Tm1RestRequest = "Cubes('$Tm1CubeName')/Views('$Tm1ViewName')"
+            
+            # Build the body
+            $Tm1RestBody = '{"@odata.type": "ibm.tm1.api.v1.MDXView", "MDX" : "' + $Tm1Mdx + '"}'
+            
+            # Execute the rest request
             $Tm1RestMethod = 'PATCH'
+            $Tm1ViewCreateByMdxResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
         }
         else {
-            $Tm1RestMethod = 'POST'   
+            # Build the rest request url
+            $Tm1RestRequest = "Cubes('$Tm1CubeName')/Views"
+            
+            # Build the body
+            $Tm1RestBody = '{"@odata.type": "ibm.tm1.api.v1.MDXView", "Name": "' + $Tm1ViewName + '", "MDX" : "' + $Tm1Mdx + '"}'
+            
+            # Execute the rest request
+            $Tm1RestMethod = 'POST'
+            $Tm1ViewCreateByMdxResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
         }
-        $Tm1ViewCreateByMdxResult = Invoke-Tm1RestRequest -Tm1ConnectionName $Tm1ConnectionName -Tm1RestMethod $Tm1RestMethod -Tm1RestRequest $Tm1RestRequest -Tm1RestBody $Tm1RestBody
     }
 
     CATCH {
