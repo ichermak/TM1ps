@@ -11,7 +11,7 @@
 
 # Module variables
 $Tm1RestApiVersion = 'v1'
-$Tm1Connections = (Get-Content '.\config.JSON' | ConvertFrom-Json).connections
+$Tm1Connections = (Get-Content "$PSScriptRoot\config.JSON" | ConvertFrom-Json).connections
 $Tm1WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
 # To disregard the certificate
