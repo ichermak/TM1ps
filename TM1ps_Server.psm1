@@ -57,4 +57,3 @@ function Invoke-Tm1ServerConfigurationGet {
     
     return $Tm1ServerConfigurationGetResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ServerConfigurationGet

@@ -63,7 +63,6 @@ function Invoke-Tm1ViewsGet {
     
     return $Tm1ViewsGetResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ViewsGet
 
 function Invoke-Tm1ViewExists {
     <#
@@ -122,7 +121,6 @@ function Invoke-Tm1ViewExists {
     
     return $Tm1ViewExistsResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ViewExists
 
 function Invoke-Tm1ViewCreateByMdx {
     <#
@@ -210,4 +208,3 @@ function Invoke-Tm1ViewCreateByMdx {
     
     return $Tm1ViewCreateByMdxResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ViewCreateByMdx

@@ -231,4 +231,3 @@ function Invoke-Tm1SubsetCreatebyMDX {
     
     return $Tm1SubsetCreatebyMDXResult
 }
-# Export-ModuleMember -Function Invoke-Tm1SubsetCreatebyMDX

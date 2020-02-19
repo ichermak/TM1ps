@@ -77,4 +77,3 @@ function Invoke-Tm1ProcessExecute {
     
     return $Tm1ProcessExecuteResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ProcessExecute

@@ -13,6 +13,28 @@
 $Tm1RestApiVersion = 'v1'
 $Tm1Connections = (Get-Content "$PSScriptRoot\config.JSON" | ConvertFrom-Json).connections
 $Tm1WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+$Tm1UrlEscapeCharacters = @{
+    ' ' = '%20';
+    '&'	= '%26';
+    '`'	= '%60';
+    ':'	= '%3A';
+    '<'	= '%3C';
+    '>'	= '%3E';
+    '['	= '%5B';
+    ']'	= '%5D';
+    '{'	= '%7B';
+    '“'	= '%22';
+    '+'	= '%2B';
+    '#'	= '%23';
+    '%'	= '%25';
+    '@'	= '%40';
+    ';'	= '%3B';
+    '\'	= '%5C';
+    '^'	= '%5E';
+    '|'	= '%7C';
+    '~'	= '%7E';
+    ','	= '%2C'
+}
 
 # To disregard the certificate
 if ($PSEdition -ne 'Core') {
@@ -73,13 +95,13 @@ function Invoke-Tm1Login {
 
         # Set Authorization
         if ($Tm1CamNameSpace) {
-            $Headers = @{
+            $Tm1Headers = @{
                 "Authorization" = 'CAMNamespace ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($Tm1User):$($Tm1Password)")); 
                 "Content-Type"  = "application/json"
             }
         }
         else {
-            $Headers = @{
+            $Tm1Headers = @{
                 "Authorization" = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($Tm1User):$($Tm1Password)")); 
                 "Content-Type"  = "application/json"
             } 
@@ -95,17 +117,17 @@ function Invoke-Tm1Login {
 
         # Establish the connection
         $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
-        $Tm1RestRequestUrl = $tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + 'ActiveSession'
+        $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + 'ActiveSession'
         if ($PSEdition -ne 'Core') {
-            $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -Headers $Headers -uri $Tm1RestRequestUrl
+            $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -Headers $Tm1Headers -uri $Tm1RestRequestUrl
         } 
         else {
-            $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -Headers $Headers -uri $Tm1RestRequestUrl
+            $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -Headers $Tm1Headers -uri $Tm1RestRequestUrl
         }
     } 
 
     CATCH {
-        Write-Error "$($_.Exception.Message)"
+        Write-Error "$($_.Exception.Message)`n$($_.ErrorDetails.Message)"
         Break
     }
 
@@ -115,7 +137,6 @@ function Invoke-Tm1Login {
     
     return $Tm1LoginResult
 }
-# Export-ModuleMember -Function Invoke-Tm1Login
 
 function Invoke-Tm1Logout { 
     <#
@@ -173,7 +194,7 @@ function Invoke-Tm1Logout {
     } 
 
     CATCH {
-        Write-Error "$($_.Exception.Message)"
+        Write-Error "$($_.Exception.Message)`n$($_.ErrorDetails.Message)"
         Break
     }
 
@@ -183,7 +204,6 @@ function Invoke-Tm1Logout {
     
     return $Tm1LogoutResult
 }
-# Export-ModuleMember -Function Invoke-Tm1Logout
 
 function Invoke-Tm1RestRequest { 
     <#
@@ -241,9 +261,14 @@ function Invoke-Tm1RestRequest {
             $Tm1Protocol = "http"
         }
 
+        # Escape special characters in the rest request
+        foreach ($Tm1UrlEscapeCharacter in $Tm1UrlEscapeCharacters.keys) {
+            $Tm1RestRequest = $Tm1RestRequest.Replace($Tm1UrlEscapeCharacter, $Tm1UrlEscapeCharacters.$Tm1UrlEscapeCharacter)
+        }
+
         # Build the rest request url
-        $tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
-        $Tm1RestRequestUrl = $tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + $Tm1RestRequest
+        $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
+        $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + $Tm1RestRequest
         
         # Execute the rest request
         if ($Tm1RestBody) {
@@ -265,7 +290,7 @@ function Invoke-Tm1RestRequest {
     }
 
     CATCH {
-        Write-Error "$($_.Exception.Message)"
+        Write-Error "$($_.Exception.Message)`n$($_.ErrorDetails.Message)"
         Break
     }
 
@@ -275,4 +300,3 @@ function Invoke-Tm1RestRequest {
     
     return $Tm1RestRequestResult
 }
-# Export-ModuleMember -Function Invoke-Tm1RestRequest

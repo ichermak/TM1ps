@@ -63,4 +63,3 @@ function Invoke-Tm1ChoreExecute {
     
     return $Tm1ChoreExecuteResult
 }
-# Export-ModuleMember -Function Invoke-Tm1ChoreExecute
