@@ -13,28 +13,6 @@
 $Tm1RestApiVersion = 'v1'
 $Tm1Connections = (Get-Content "$PSScriptRoot\config.JSON" | ConvertFrom-Json).connections
 $Tm1WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-$Tm1UrlEscapeCharacters = @{
-    '%'	= '%25';
-    ' ' = '%20';
-    '&'	= '%26';
-    '`'	= '%60';
-    ':'	= '%3A';
-    '<'	= '%3C';
-    '>'	= '%3E';
-    '['	= '%5B';
-    ']'	= '%5D';
-    '{'	= '%7B';
-    '“'	= '%22';
-    '+'	= '%2B';
-    '#'	= '%23';
-    '@'	= '%40';
-    ';'	= '%3B';
-    '\'	= '%5C';
-    '^'	= '%5E';
-    '|'	= '%7C';
-    '~'	= '%7E';
-    ','	= '%2C'
-}
 
 # To disregard the certificate
 if ($PSEdition -ne 'Core') {
@@ -118,6 +96,7 @@ function Invoke-Tm1Login {
         # Establish the connection
         $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
         $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + 'ActiveSession'
+        $Tm1RestRequestUrl = [System.Web.HttpUtility]::UrlPathEncode($Tm1RestRequestUrl)
         if ($PSEdition -ne 'Core') {
             $Tm1LoginResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -Headers $Tm1Headers -uri $Tm1RestRequestUrl
         } 
@@ -185,6 +164,7 @@ function Invoke-Tm1Logout {
         # Logout        
         $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
         $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + 'logout'
+        $Tm1RestRequestUrl = [System.Web.HttpUtility]::UrlPathEncode($Tm1RestRequestUrl)
         if ($PSEdition -ne 'Core') {
             $Tm1LogoutResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -uri $Tm1RestRequestUrl
         }
@@ -260,15 +240,11 @@ function Invoke-Tm1RestRequest {
         else {
             $Tm1Protocol = "http"
         }
-
-        # Escape special characters in the rest request
-        foreach ($Tm1UrlEscapeCharacter in $Tm1UrlEscapeCharacters.keys) {
-            $Tm1RestRequest = $Tm1RestRequest.Replace($Tm1UrlEscapeCharacter, $Tm1UrlEscapeCharacters.$Tm1UrlEscapeCharacter)
-        }
-
+        
         # Build the rest request url
         $Tm1RestApiUrl = $Tm1Protocol + "://" + $Tm1AdminHost + ":" + $Tm1HttpPortNumber + "/api"
         $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + $Tm1RestApiVersion + '/' + $Tm1RestRequest
+        $Tm1RestRequestUrl = [System.Web.HttpUtility]::UrlPathEncode($Tm1RestRequestUrl)
         
         # Execute the rest request
         if ($Tm1RestBody) {
