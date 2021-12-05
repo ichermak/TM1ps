@@ -6,7 +6,5 @@
 
 Powershell module for TM1 (Planning Analytics)
 
-<br/>
-  Open `TM1ps` as a remote repo in VS Code, without cloning it.
-  [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/ichermak/TM1ps)
-<br/>
+Open `TM1ps` as a remote repo in VS Code, without cloning it.
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/ichermak/TM1ps)
