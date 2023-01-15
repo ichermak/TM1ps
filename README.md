@@ -4,6 +4,4 @@
 
 # TM1ps
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/ichermak/TM1ps)
-
 Powershell module for TM1 (Planning Analytics)
