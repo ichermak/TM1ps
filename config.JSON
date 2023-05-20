@@ -1,27 +1,17 @@
 {
     "connections": {
         "Planning_Sample": {
-            "servername": "Planning Sample",
             "adminhost": "localhost",
+            "servername": "Planning Sample",
             "httpportnumber": "12354",
+            "camnamespace": "",
             "user": "Admin",
-            "password": "Apple",
-            "usessl": "True",
-            "camnamespace": ""
+            "password": "Apple"
         },
-        "connection02": {
+        "connection_02": {
             "servername": "Server Name 01",
             "adminhost": "localhost",
             "httpportnumber": "5019",
-            "user": "User",
-            "password": "Password",
-            "usessl": "True",
-            "camnamespace": ""
-        },
-        "connection03": {
-            "servername": "Server Name 02",
-            "adminhost": "localhost",
-            "httpportnumber": "5055",
             "user": "User",
             "password": "Password",
             "usessl": "True",

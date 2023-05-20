@@ -65,10 +65,6 @@ function Get-Tm1Subsets {
         Write-Error "$($_.Exception.Message)"
         Break
     }
-
-    FINALLY {
-        
-    }
     
     return $Tm1SubsetsGetResult
 }
@@ -127,10 +123,6 @@ function Test-Tm1Subset {
     CATCH {
         Write-Error "$($_.Exception.Message)"
         Break
-    }
-
-    FINALLY {
-        
     }
     
     return $Tm1SubsetExistsResult
@@ -223,10 +215,6 @@ function Invoke-Tm1SubsetCreatebyMDX {
     CATCH {
         Write-Error "$($_.Exception.Message)"
         Break
-    }
-
-    FINALLY {
-        
     }
     
     return $Tm1SubsetCreatebyMDXResult

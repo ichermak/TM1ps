@@ -57,10 +57,6 @@ function Get-Tm1Views {
         Break
     }
 
-    FINALLY {
-        
-    }
-    
     return $Tm1ViewsGetResult
 }
 
@@ -113,10 +109,6 @@ function Test-Tm1View {
     CATCH {
         Write-Error "$($_.Exception.Message)"
         Break
-    }
-
-    FINALLY {
-        
     }
     
     return $Tm1ViewExistsResult
@@ -200,10 +192,6 @@ function Invoke-Tm1ViewCreateByMdx {
     CATCH {
         Write-Error "$($_.Exception.Message)"
         Break
-    }
-
-    FINALLY {
-        
     }
     
     return $Tm1ViewCreateByMdxResult

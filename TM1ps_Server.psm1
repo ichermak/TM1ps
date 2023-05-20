@@ -50,10 +50,6 @@ function Get-Tm1ServerConfiguration {
         Write-Error "$($_.Exception.Message)"
         Break
     }
-
-    FINALLY {
-        
-    }
     
     return $Tm1ServerConfigurationGetResult
 }

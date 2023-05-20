@@ -56,10 +56,6 @@ function Invoke-Tm1Chore {
         Write-Error "$($_.Exception.Message)"
         Break
     }
-
-    FINALLY {
-        
-    }
     
     return $Tm1ChoreExecuteResult
 }

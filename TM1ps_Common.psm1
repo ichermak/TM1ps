@@ -4,6 +4,7 @@
 #  |_|  |_|  | |_| |_|   _)_)
 # 
 # Commun functions:
+#   'Get-Tm1Servers',
 #   'Request-Tm1Login',
 #   'Request-Tm1Logout',
 #   'Request-Tm1Rest',
@@ -31,6 +32,61 @@ if ($PSEdition -ne 'Core') {
     [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
     $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+}
+
+function Get-Tm1Servers { 
+    <#
+        .SYNOPSIS
+        ...
+
+        .DESCRIPTION
+        ...
+
+        .PARAMETER Tm1ConnectionName
+        Parameter 1
+
+        .INPUTS
+        None. You cannot pipe objects to this function.
+
+        .OUTPUTS
+        ...
+
+        .EXAMPLE
+        $Tm1Login = Request-Tm1Login -Tm1ConnectionName 'connection01'
+
+        .LINK
+        https://github.com/ichermak/TM1ps
+    #>
+
+    [CmdletBinding()]
+    
+    PARAM (
+        [Parameter(Mandatory = $true)] [STRING]$Tm1ConnectionName
+    )
+    
+    TRY {    
+        # Get informations from the config file
+        $Tm1AdminHost = $Tm1Connections.$Tm1ConnectionName.adminhost
+        
+        # Get TM1 servers
+        $Tm1Protocol = 'https'
+        $Tm1HttpPortNumber = '5898'
+        $Tm1RestApiUrl = $Tm1Protocol + '://' + $Tm1AdminHost + ':' + $Tm1HttpPortNumber + '/api' + '/' + $Tm1RestApiVersion
+        $Tm1RestRequestUrl = $Tm1RestApiUrl + '/' + 'Servers'
+        $Tm1RestRequestUrl = [System.Web.HttpUtility]::UrlPathEncode($Tm1RestRequestUrl)
+        if ($PSEdition -ne 'Core') {
+            $Tm1RestResult = Invoke-RestMethod -WebSession $Tm1WebSession -Method 'GET' -Headers $Tm1Headers -uri $Tm1RestRequestUrl
+        } 
+        else {
+            $Tm1RestResult = Invoke-RestMethod -WebSession $Tm1WebSession -SkipCertificateCheck -Method 'GET' -Headers $Tm1Headers -uri $Tm1RestRequestUrl
+        }
+        $Tm1RestResult = $Tm1RestResult.value
+    } 
+    CATCH {
+        Write-Error "$($_.Exception.Message)`n$($_.ErrorDetails.Message)"
+        Break
+    }
+    return $Tm1RestResult
 }
 
 function Request-Tm1Login { 
@@ -111,10 +167,6 @@ function Request-Tm1Login {
         Break
     }
 
-    FINALLY {
-
-    }
-    
     return $Tm1LoginResult
 }
 
@@ -179,10 +231,6 @@ function Request-Tm1Logout {
         Break
     }
 
-    FINALLY {
-
-    }
-    
     return $Tm1LogoutResult
 }
 
@@ -269,10 +317,6 @@ function Request-Tm1Rest {
     CATCH {
         Write-Error "$($_.Exception.Message)`n$($_.ErrorDetails.Message)"
         Break
-    }
-
-    FINALLY {
-
     }
     
     return $Tm1RestRequestResult
